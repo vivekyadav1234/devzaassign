@@ -1,0 +1,88 @@
+<div class="alert alert-success" role="alert" *ngIf="success">
+  {{succesMessage}}
+</div>
+<div class="alert alert-error" role="alert" *ngIf="error">
+  {{errorMessage}}
+</div>
+<div class="container">
+  <div class="row">
+    <div class="col-md-12 text-right mt-2">
+      <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal" (click)="cleardata();">+ Create Task</button>
+    </div>
+  </div>
+</div>
+<div class="container">
+  <div class="row justify-content-center">
+    <div class="col-md-10">
+      <div class="row">
+        <div class="col-md-12">
+          <form action="/search.html" class="search-wrapper cf m-4">
+              <input class="form-control" type="text" placeholder="Search by user here..." required="" id="search">
+              <button type="submit" (click)="search();">Search</button>
+          </form>
+          <span class="mr-4 _043 mb-2" (click)="ClearSearch();">Clear Search</span>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <div cdkDropList class="example-list" (cdkDropListDropped)="drop($event)">
+            <div class="example-box" *ngFor="let task of tasklist" cdkDrag> 
+              <div class="w-100">
+                <div class="accordion">
+                  <div class="card">
+                    <div class="mt-3">
+                      <span class="usename ml-3">{{task?.assigned_name}}</span>
+                      <span class="flotR">{{task?.created_on | date: 'dd/MM/yyyy'}}</span>
+                    </div>
+                    <div class="card-header" id="headingOne">
+                      <span>{{task?.message}}</span>
+                      <div class="pull-right">
+                        <a class="icon-btn ml-3 addCorsor" (click)="editTask(task)"><i class="fas fa-edit _837"></i></a>
+                        <a class="icon-btn addCorsor" (click)="deleteTask(task)"><i class="fas fa-trash-alt _837"></i></a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div> 
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+  <!-- The Modal -->
+  <div class="modal" id="myModal">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title">Create Tast And Assign To User</h4>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        <!-- Modal body -->
+        <div class="modal-body">
+          <div class="form-group">
+            <label for="do_somthing">Enter Tast </label>
+            <input placeholder="Enter Task Here ...." class="form-control" type="text" id="do_somthing">
+          </div>
+         <div class="form-group id_100">
+            <p class="mt-2 mb-2">Assign Task To User</p>
+            <select  placeholder="Select User To Assign A Task" class="filterSelect dissplay-chng1 form-control" (change)="changeSub($event)"> 
+              <option value="" disabled>Assign Task To User</option> 
+              <ng-container *ngFor="let sub of userlist">
+                <option value="{{sub?.id}}">{{sub?.name}}</option>
+              </ng-container>
+            </select>
+          </div>
+        </div>
+        <!-- Modal footer -->
+        <div class="modal-footer">
+          <button *ngIf="!editButton" type="button" class="btn btn-danger" data-dismiss="modal" (click)="createTask();">Create Task</button>
+          <button *ngIf="editButton" type="button" class="btn btn-danger" data-dismiss="modal" (click)="UpdateTask();">Update Task</button>
+           
+        </div>
+      </div>
+    </div>
+  </div>
+<div *ngIf="loader" class="loading">Loading&#8230;</div>
